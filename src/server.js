@@ -24,6 +24,7 @@ const sockets = [];
 // websocket 이벤트 핸들러 추가
 wss.addListener("connection", (socket) => {
     sockets.push(socket);
+    socket["nickname"] = "익명";
     console.log("Connected to Browser");
     socket.on("close", () => console.log("Disconnected from browser"));
 
@@ -31,7 +32,7 @@ wss.addListener("connection", (socket) => {
         const message = JSON.parse(msg);
         switch (message.type) {
             case "new_message":
-                sockets.forEach(aSocket => aSocket.send(`${message.payload}`));
+                sockets.forEach(aSocket => aSocket.send(`${socket.nickname} : ${message.payload}`));
                 break;
             case "nickname":
                 socket["nickname"] = message.payload;       // 연결된 소켓의 닉네임을 설정

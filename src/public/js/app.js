@@ -40,7 +40,6 @@ const handleMessageSubmit = (event) => {
     event.preventDefault();
     const input = messageForm.querySelector("input");
     socket.send(makeJsonString("new_message", input.value));
-    console.log(makeJsonString("new_message", input.value));
     input.value = "";
 }
 
