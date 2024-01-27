@@ -24,6 +24,8 @@ const wss = new WebSocket.Server({ server });
 wss.addListener("connection", (socket) => {
     console.log("Connected to Browser");
     socket.send("Hello, there!!");
+    socket.on("close", () => console.log("Disconnected from browser"));
+    socket.on("message", (message) => console.log(`message: ${message}`))
 });
 
 const handleListen = () => console.log("Listening on http://localhost:3000");
