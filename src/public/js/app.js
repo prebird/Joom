@@ -1,11 +1,26 @@
 // 클라이언트
 const messageList = document.querySelector("ul");
-const messageForm = document.querySelector("form");
+const nicknameForm = document.querySelector("#nickname");
+const messageForm = document.querySelector("#message");
 const socket = new WebSocket(`ws://${window.location.host}`);  // 컴퓨터에서 - ws://localhost:3000 
+
+// 문자열 타입의 JSON Object를 생성합니다.
+// JSON을 자바스크립트 Object 로 던지면 js로 된 서버에서는 받은 수 있지만, 다른 서버에서는 받지 못해서 범용성을 위해 문자열로 변환하여 요청합니다.
+const makeJsonString = (type, payload) => {
+    data = {
+        "type": type,
+        "payload": payload
+    }
+    return JSON.stringify(data);
+}
 
 // 소켓 이벤트 핸들러 추가
 socket.addEventListener("open", (socket) => {
     console.log("Conneted to Server");
+})
+
+socket.addEventListener("close", (socket) => {
+    console.log("Disconnected From Server");
 })
 
 socket.addEventListener("message", (socket) => {
@@ -14,15 +29,20 @@ socket.addEventListener("message", (socket) => {
     messageList.append(li);
 })
 
-socket.addEventListener("close", (socket) => {
-    console.log("Disconnected From Server");
-})
-
-const handleSubmit = (event) => {
+const handleNicknameSubmit = (event) => {
     event.preventDefault();
-    const input = messageForm.querySelector("input");
-    socket.send(input.value);
+    const input = nicknameForm.querySelector("input");
+    socket.send(makeJsonString("nickname", input.value));
     input.value = "";
 }
 
-messageForm.addEventListener("submit", handleSubmit);
+const handleMessageSubmit = (event) => {
+    event.preventDefault();
+    const input = messageForm.querySelector("input");
+    socket.send(makeJsonString("new_message", input.value));
+    console.log(makeJsonString("new_message", input.value));
+    input.value = "";
+}
+
+nicknameForm.addEventListener("submit", handleNicknameSubmit);
+messageForm.addEventListener("submit", handleMessageSubmit);
