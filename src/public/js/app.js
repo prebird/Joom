@@ -9,8 +9,9 @@ socket.addEventListener("open", (socket) => {
 })
 
 socket.addEventListener("message", (socket) => {
-    console.log("message arrived");
-    console.log(socket.data);
+    const li = document.createElement("li");
+    li.innerText = socket.data;
+    messageList.append(li);
 })
 
 socket.addEventListener("close", (socket) => {
