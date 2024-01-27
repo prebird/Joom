@@ -1,1 +1,1 @@
-alert("dd");
+const socket = new WebSocket(`ws://${window.location.host}`);  // 컴퓨터에서 - ws://localhost:3000 

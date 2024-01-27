@@ -19,5 +19,12 @@ const server = http.createServer(app);
 // 동일 포트에서 두 프로토콜을 같이 제공하기 위한 것입니다.
 const wss = new WebSocket.Server({ server });
 
+const handleConnection = (websocket) => {
+    console.log(websocket);
+}
+
+// websocket 이벤트 핸들러 추가
+wss.addListener("connection", handleConnection);
+
 const handleListen = () => console.log("Listening on http://localhost:3000");
 server.listen(3000, handleListen);
