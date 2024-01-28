@@ -17,11 +17,13 @@ const httpServer = http.createServer(app);
 const wsServer = SocketIO(httpServer);
 
 wsServer.on("connection", (socket) => {
-    socket.on("enter_room", (a, b, c, d, done) => {
-        console.log(a + b + c + d);
-        setTimeout(() => {
-            done();
-        }, 5000);
+    socket.on("enter_room", (roomName, done) => {
+        done();
+        console.log(roomName);
+        console.log(socket.id);
+        console.log(socket.rooms);
+        socket.join(roomName);  // 채팅룸 접속
+        console.log(socket.rooms);
     });
 });
 
