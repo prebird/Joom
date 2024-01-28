@@ -23,7 +23,10 @@ wsServer.on("connection", (socket) => {
         console.log(socket.rooms);
         socket.to(roomName).emit("welcome");    // roomName 채팅방에 welcome 이벤트를 발생시킴
     });
-    // socket.on("welcome")
+    socket.on("disconnecting", () => {
+        // 해당 소켓이 속해있던 모든 room에게 이벤트 브로드캐스팅
+        socket.rooms.forEach(room => socket.to(room).emit("bye"));
+    })
 });
 
 const handleListen = () => console.log("Listening on http://localhost:3000");

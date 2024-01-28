@@ -42,3 +42,7 @@ form.addEventListener("submit", handleRoomSubmit);
 socket.on("welcome", () => {
     addMessage("(누군가)가 입장하셨습니다.");
 })
+
+socket.on("bye", () => {
+    addMessage("(누군가)가 방을 나갔습니다.");
+})
