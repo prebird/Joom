@@ -22,6 +22,8 @@ const showRoom = () => {
     room.hidden = false;
     const h3 = room.querySelector("h3");
     h3.innerText = `ROOM ${roomName}`;
+    const form = room.querySelector("form");
+    form.addEventListener("submit", handleMessageSubmit);
 }
 
 const handleRoomSubmit = (event) => {
@@ -37,6 +39,17 @@ const handleRoomSubmit = (event) => {
     input.value = "";
 }
 
+const handleMessageSubmit = (event) => {
+    event.preventDefault();
+    const input = room.querySelector("input");
+    const value = input.value;
+    socket.emit("new_message", value, roomName, () => {
+        addMessage(`You: ${value}`);                        // 왜 직접 추가해 주어야할까? 이벤트를 발생시킨 socket 으로는 브로드캐스팅 안되나?
+    })
+    input.value = "";
+}
+
+
 form.addEventListener("submit", handleRoomSubmit);
 
 socket.on("welcome", () => {
@@ -45,4 +58,8 @@ socket.on("welcome", () => {
 
 socket.on("bye", () => {
     addMessage("(누군가)가 방을 나갔습니다.");
+})
+
+socket.on("new_message", (msg) => {
+    addMessage(msg);
 })

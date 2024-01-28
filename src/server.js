@@ -26,6 +26,10 @@ wsServer.on("connection", (socket) => {
     socket.on("disconnecting", () => {
         // 해당 소켓이 속해있던 모든 room에게 이벤트 브로드캐스팅
         socket.rooms.forEach(room => socket.to(room).emit("bye"));
+    });
+    socket.on("new_message", (msg, room, done) => {
+        socket.to(room).emit("new_message", msg);
+        done();
     })
 });
 
