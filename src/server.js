@@ -19,12 +19,11 @@ const wsServer = SocketIO(httpServer);
 wsServer.on("connection", (socket) => {
     socket.on("enter_room", (roomName, done) => {
         done();
-        console.log(roomName);
-        console.log(socket.id);
-        console.log(socket.rooms);
         socket.join(roomName);  // 채팅룸 접속
         console.log(socket.rooms);
+        socket.to(roomName).emit("welcome");    // roomName 채팅방에 welcome 이벤트를 발생시킴
     });
+    // socket.on("welcome")
 });
 
 const handleListen = () => console.log("Listening on http://localhost:3000");
